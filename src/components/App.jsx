@@ -6,22 +6,16 @@ import Contact from 'components/Contact';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeFilter } from 'redux/Filter/filterReducer';
-import { removeContact, addContact } from 'redux/Contacts/contactsReducer';
+// import { changeFilter } from 'redux/Filter/filterReducer';
+// import { removeContact, addContact } from 'redux/Contacts/contactsReducer';
 
-// const LS_KEY = 'contacts';
+import { changeFilter } from 'redux/Filter/filterSlice';
+import { removeContact, addContact } from 'redux/Contacts/contactsSlice';
 
 export default function App() {
-  // const [contacts, setContacts] = useState(
-  //   () => JSON.parse(localStorage.getItem(LS_KEY)) ?? []
-  // );
   const filter = useSelector(({ filter }) => filter);
   const contacts = useSelector(({ contacts }) => contacts);
   const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   localStorage.setItem(LS_KEY, JSON.stringify(contacts));
-  // }, [contacts]);
 
   const formSubmitHandler = (name, number) => {
     if (isDuplicate(name, number)) {
