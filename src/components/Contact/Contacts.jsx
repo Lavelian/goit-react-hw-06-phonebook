@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
 import ContactList from 'components/ContactList';
 import ContactsInput from 'components/ContactsInput';
-const Contact = ({ filteredContacts, filter, handleChange, removeBook }) => {
+const Contact = ({ filteredContacts, filter, handleChange, removeContact }) => {
   return (
     <>
       <h2>Conatcts</h2>
       <ContactsInput filter={filter} handleChange={handleChange} />
       <ContactList
         filteredContacts={filteredContacts}
-        removeBook={removeBook}
+        removeContact={removeContact}
       />
     </>
   );

@@ -1,34 +1,36 @@
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
 import Container from './Container';
 import Form from 'components/Form';
 import Contact from 'components/Contact';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-const LS_KEY = 'contacts';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeFilter } from 'redux/Filter/filterReducer';
+import { removeContact, addContact } from 'redux/Contacts/contactsReducer';
+
+// const LS_KEY = 'contacts';
 
 export default function App() {
-  const [contacts, setContacts] = useState(
-    () => JSON.parse(localStorage.getItem(LS_KEY)) ?? []
-  );
-  const [filter, setFilter] = useState('');
-  useEffect(() => {
-    localStorage.setItem(LS_KEY, JSON.stringify(contacts));
-  }, [contacts]);
+  // const [contacts, setContacts] = useState(
+  //   () => JSON.parse(localStorage.getItem(LS_KEY)) ?? []
+  // );
+  const filter = useSelector(({ filter }) => filter);
+  const contacts = useSelector(({ contacts }) => contacts);
+  const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   localStorage.setItem(LS_KEY, JSON.stringify(contacts));
+  // }, [contacts]);
 
   const formSubmitHandler = (name, number) => {
     if (isDuplicate(name, number)) {
       return notify();
     }
-    setContacts(prevContacts => {
-      return [...prevContacts, { name, number, id: nanoid() }];
-    });
+    dispatch(addContact({ name, number, id: nanoid() }));
   };
-  const removeBook = id => {
-    setContacts(prev => {
-      const newContacts = prev.filter(item => item.id !== id);
-      return newContacts;
-    });
+  const removeContactById = id => {
+    dispatch(removeContact(id));
   };
   const getFilteredContacts = () => {
     if (!filter) {
@@ -44,7 +46,7 @@ export default function App() {
 
   const handleChange = e => {
     const { value } = e.target;
-    setFilter(value);
+    dispatch(changeFilter(value));
   };
 
   const isDuplicate = (name, number) => {
@@ -62,7 +64,7 @@ export default function App() {
         filter={filter}
         filteredContacts={filteredContacts}
         handleChange={handleChange}
-        removeBook={removeBook}
+        removeContact={removeContactById}
       />
       <ToastContainer />
     </Container>
