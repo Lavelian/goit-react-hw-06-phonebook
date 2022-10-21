@@ -1,4 +1,3 @@
-// import { useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
 import Container from './Container';
 import Form from 'components/Form';
