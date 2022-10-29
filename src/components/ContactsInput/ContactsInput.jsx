@@ -1,5 +1,15 @@
 import { InputLabel } from './ContactsInput.styled';
-export default function ContactsInput({ handleChange, filter }) {
+import { changeFilter } from 'redux/Filter/filterSlice';
+import { useDispatch, useSelector } from 'react-redux';
+export default function ContactsInput() {
+  const filter = useSelector(({ filter }) => filter);
+
+  const dispatch = useDispatch();
+
+  const handleChange = e => {
+    const { value } = e.target;
+    dispatch(changeFilter(value));
+  };
   return (
     <InputLabel>
       Find Contacts by name

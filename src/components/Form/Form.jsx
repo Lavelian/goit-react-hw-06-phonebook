@@ -1,16 +1,32 @@
 import { Formik, Field } from 'formik';
 import { FormBox, Button } from './Form.styled';
+import { toast } from 'react-toastify';
+import { nanoid } from 'nanoid';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'redux/Contacts/contactsSlice';
 
 const initialValues = {
   name: '',
   number: '',
 };
 
-export default function Form({ OnSubmitForm }) {
+export default function Form() {
+  const contacts = useSelector(({ contacts }) => contacts);
+  const dispatch = useDispatch();
   const handleSabmit = ({ name, number }, { resetForm }) => {
-    OnSubmitForm(name, number);
+    if (isDuplicate(name, number)) {
+      resetForm();
+      return toast('There is already a contact');
+    }
+    dispatch(addContact({ name, number, id: nanoid() }));
     resetForm();
   };
+  const isDuplicate = (name, number) => {
+    return contacts.find(
+      contact => contact.name === name && contact.number === number
+    );
+  };
+
   return (
     <Formik onSubmit={handleSabmit} initialValues={initialValues}>
       <FormBox>
